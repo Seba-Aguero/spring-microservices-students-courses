@@ -1,0 +1,45 @@
+Primera Fase - Mejoras Básicas
+------------------------------
+- Documentación con Swagger/OpenAPI
+  - Documenta todos los endpoints
+  - Aprenderás sobre anotaciones de documentación
+  - Mejora la presentación profesional del proyecto
+- Manejo de Excepciones Global
+  - Crear GlobalExceptionHandler
+  - Respuestas de error estandarizadas
+  - Mejores prácticas de manejo de errores
+- Logging estructurado
+  - Implementar SLF4J + Logback
+  - Aprenderás sobre observabilidad básica
+  - Útil para debugging y monitoreo
+
+Segunda Fase - Seguridad Básica
+-------------------------------
+- Spring Security
+  - Autenticación básica primero
+  - Luego JWT
+  - Roles y permisos básicos
+- Validaciones
+  - Bean Validation
+  - Validación de DTOs
+  - Reglas de negocio más robustas
+
+Tercera Fase - Calidad de Código
+--------------------------------
+- Tests Unitarios
+  - JUnit 5
+  - Mockito
+
+Cuarta Fase - Características Avanzadas
+---------------------------------------
+- Mensajería
+  - RabbitMQ o Kafka
+  - Comunicación asíncrona
+  - Eventos entre servicios
+
+Quinta Fase - Containerización
+-----------------------------
+- Docker
+  - Dockerfile para cada servicio
+  - Docker Compose
+  - Redes y volúmenes
