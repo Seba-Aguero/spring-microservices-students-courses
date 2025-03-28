@@ -1,6 +1,6 @@
 package com.microservice.student.controller;
 
-import com.microservice.student.entities.Student;
+import com.microservice.student.entity.Student;
 import com.microservice.student.service.IStudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

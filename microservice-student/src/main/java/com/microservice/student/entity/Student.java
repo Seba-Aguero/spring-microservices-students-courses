@@ -1,4 +1,4 @@
-package com.microservice.student.entities;
+package com.microservice.student.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

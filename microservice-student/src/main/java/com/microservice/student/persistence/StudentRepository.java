@@ -1,8 +1,9 @@
 package com.microservice.student.persistence;
 
-import com.microservice.student.entities.Student;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import com.microservice.student.entity.Student;
 
 import java.util.List;
 

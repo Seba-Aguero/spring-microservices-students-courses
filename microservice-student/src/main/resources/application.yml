@@ -3,12 +3,3 @@ spring:
     name: msvc-student
   config:
     import: optional:configserver:http://localhost:8888
-
-# SpringDoc OpenAPI Configuration
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-    operationsSorter: method
-  show-actuator: true
