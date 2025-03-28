@@ -19,7 +19,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
             .info(new Info()
-                .title(applicationName + " - API Documentation")
+                .title(applicationName + " | API Documentation")
                 .description("Documentation for the Student Microservice REST API")
                 .version("1.0"))
             .servers(List.of(
