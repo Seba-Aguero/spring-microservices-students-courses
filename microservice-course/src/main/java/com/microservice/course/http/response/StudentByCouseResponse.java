@@ -1,12 +1,13 @@
 package com.microservice.course.http.response;
 
-import com.microservice.course.controller.sto.StudentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
+import com.microservice.course.controller.dto.StudentDTO;
 
 @Data
 @Builder

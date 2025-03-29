@@ -8,7 +8,7 @@ import com.microservice.student.entity.Student;
 import java.util.List;
 
 @Repository
-public interface StudentRepository extends CrudRepository<Student, Long> {
+public interface IStudentRepository extends CrudRepository<Student, Long> {
 
     List<Student> findAllByCourseId(Long courseId);
 }

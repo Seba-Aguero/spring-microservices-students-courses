@@ -51,7 +51,7 @@ public class StudentController {
     @ApiResponse(responseCode = "200", description = "List of students retrieved successfully")
     @GetMapping("/search-by-course/{courseId}")
     public ResponseEntity<?> findByCourseId(@PathVariable Long courseId){
-        return ResponseEntity.ok(studentService.findByCourseId(courseId));
+        return ResponseEntity.ok(studentService.findAllByCourseId(courseId));
     }
 }
 
