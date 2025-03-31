@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/course")
@@ -28,7 +29,7 @@ public class CourseController {
     })
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveCourse(@RequestBody Course course){
+    public void saveCourse(@Valid @RequestBody Course course){
         courseService.save(course);
     }
 
@@ -58,4 +59,5 @@ public class CourseController {
         return ResponseEntity.ok(courseService.findStudentsByCourseId(courseId));
     }
 }
+
 

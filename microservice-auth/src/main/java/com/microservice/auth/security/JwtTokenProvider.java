@@ -3,6 +3,8 @@ package com.microservice.auth.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +19,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class JwtTokenProvider {
 
@@ -71,8 +74,27 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+
+            // Verify token expiration
+            Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+            Date expiration = claims.getExpiration();
+            if (expiration != null && expiration.before(new Date())) {
+                log.warn("JWT token is expired");
+                return false;
+            }
+
             return true;
+        } catch (ExpiredJwtException e) {
+            log.error("JWT token is expired: {}", e.getMessage());
+            return false;
+        } catch (UnsupportedJwtException e) {
+            log.error("JWT token is unsupported: {}", e.getMessage());
+            return false;
+        } catch (MalformedJwtException e) {
+            log.error("Invalid JWT token: {}", e.getMessage());
+            return false;
         } catch (JwtException | IllegalArgumentException e) {
+            log.error("JWT token validation error: {}", e.getMessage());
             return false;
         }
     }

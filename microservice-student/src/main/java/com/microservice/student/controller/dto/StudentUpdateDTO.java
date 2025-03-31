@@ -1,17 +1,18 @@
-package com.microservice.course.controller.dto;
+package com.microservice.student.controller.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentDTO {
+public class StudentUpdateDTO {
+
     @NotBlank(message = "Name is required")
     private String name;
 
