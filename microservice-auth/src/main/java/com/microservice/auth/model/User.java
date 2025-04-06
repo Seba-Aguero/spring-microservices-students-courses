@@ -29,7 +29,7 @@ public class User {
 
     @Column(nullable = false)
     @NotBlank(message = "Password is required")
-    @Size(min = 6, max = 40, message = "Password must be between 6 and 40 characters")
+    @Size(min = 6, max = 60, message = "Password must be between 6 and 60 characters")
     private String password;
 
     @Column(nullable = false)
@@ -44,4 +44,5 @@ public class User {
 
     private boolean enabled = true;
 }
+
 

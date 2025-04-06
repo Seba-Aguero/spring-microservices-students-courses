@@ -12,6 +12,10 @@ import jakarta.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentDTO {
+
+    @NotBlank(message = "Id is required")
+    private Long id;
+
     @NotBlank(message = "Name is required")
     private String name;
 

@@ -8,19 +8,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/course")
 @Tag(name = "Course Controller", description = "API for course management")
 public class CourseController {
 
-    @Autowired
-    private ICourseService courseService;
+    private final ICourseService courseService;
 
     @Operation(summary = "Create a new course", description = "Creates a new course in the database")
     @ApiResponses(value = {

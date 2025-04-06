@@ -24,18 +24,18 @@ Segunda Fase - Seguridad Básica
   - Validación de DTOs
   - Reglas de negocio más robustas
 
-Tercera Fase - Calidad de Código
---------------------------------
-- Tests Unitarios
-  - JUnit 5
-  - Mockito
-
-Cuarta Fase - Características Avanzadas
+Tercera Fase - Características Avanzadas
 ---------------------------------------
 - Mensajería
   - RabbitMQ o Kafka
   - Comunicación asíncrona
   - Eventos entre servicios
+
+Cuarta Fase - Calidad de Código
+--------------------------------
+- Tests Unitarios
+  - JUnit 5
+  - Mockito
 
 Quinta Fase - Containerización
 -----------------------------

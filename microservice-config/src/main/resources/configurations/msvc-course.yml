@@ -17,6 +17,11 @@ spring:
   output:
     ansi:
       enabled: always
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
 
 # SpringDoc OpenAPI Configuration
 springdoc:
@@ -33,6 +38,7 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
+
 
 
 

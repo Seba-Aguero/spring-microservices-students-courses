@@ -2,18 +2,22 @@ package com.microservice.student.service;
 
 import com.microservice.student.controller.dto.StudentUpdateDTO;
 import com.microservice.student.entity.Student;
-import com.microservice.student.exception.ResourceNotFoundException;
+import com.microservice.student.messaging.service.StudentEventPublisher;
 import com.microservice.student.persistence.IStudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class StudentServiceImpl implements IStudentService {
 
-    @Autowired
-    private IStudentRepository studentRepository;
+    private final IStudentRepository studentRepository;
+    private final StudentEventPublisher studentEventPublisher;
 
     @Override
     public List<Student> findAll() {
@@ -23,7 +27,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public Student findById(Long id) {
         return studentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Student", id));
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
     }
 
     @Override
@@ -41,7 +45,13 @@ public class StudentServiceImpl implements IStudentService {
             }
         }
 
-        studentRepository.save(student);
+        Student savedStudent = studentRepository.save(student);
+
+        try {
+            studentEventPublisher.publishStudentCreated(savedStudent);
+        } catch (Exception e) {
+            log.error("Error publishing student created event: {}", e.getMessage());
+        }
     }
 
     @Override
@@ -53,6 +63,7 @@ public class StudentServiceImpl implements IStudentService {
     public void delete(Long id) {
         Student student = findById(id);
         studentRepository.delete(student);
+        studentEventPublisher.publishStudentDeleted(student);
     }
 
     @Override
@@ -75,6 +86,9 @@ public class StudentServiceImpl implements IStudentService {
             throw new IllegalArgumentException("Course ID must be a positive number");
         }
 
+        studentEventPublisher.publishStudentUpdated(existingStudent);
+
         return studentRepository.save(existingStudent);
     }
 }
+

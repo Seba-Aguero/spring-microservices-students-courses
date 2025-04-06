@@ -1,5 +1,9 @@
 package com.microservice.course.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.microservice.course.client.StudentClient;
 import com.microservice.course.controller.dto.StudentDTO;
 import com.microservice.course.entity.Course;
@@ -9,21 +13,16 @@ import com.microservice.course.http.response.StudentByCouseResponse;
 import com.microservice.course.persistence.ICourseRepository;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CourseServiceImpl implements ICourseService {
 
-    @Autowired
-    private ICourseRepository courseRepository;
-
-    @Autowired
-    private StudentClient studentClient;
+    private final ICourseRepository courseRepository;
+    private final StudentClient studentClient;
+    private final StudentCacheService studentCacheService;
 
     @Override
     public List<Course> findAll() {
@@ -43,28 +42,36 @@ public class CourseServiceImpl implements ICourseService {
 
     @Override
     public StudentByCouseResponse findStudentsByCourseId(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course", courseId));
 
-        try {
-            Course course = courseRepository.findById(courseId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Course", courseId));
+        List<StudentDTO> studentDTOList;
 
-            List<StudentDTO> studentDTOList;
+        // First try to get students from cache
+        studentDTOList = studentCacheService.getStudentsByCourse(courseId);
+
+        // If cache is empty, fetch from student service
+        if (studentDTOList.isEmpty()) {
+            log.info("Cache miss for course {}, fetching from student service", courseId);
             try {
-                studentDTOList = studentClient.findAllStudentByCourse(course.getId());
+                studentDTOList = studentClient.findAllStudentByCourse(courseId);
+                // Update cache with fetched data
+                for (StudentDTO student : studentDTOList) {
+                    studentCacheService.addOrUpdateStudent(student, courseId);
+                }
             } catch (FeignException e) {
                 log.error("Error communicating with student service: {}", e.getMessage());
                 throw new MicroserviceException("Error retrieving students from student service", e);
             }
-
-            return StudentByCouseResponse.builder()
-                    .courseName(course.getName())
-                    .teacher(course.getTeacher())
-                    .studentDTOList(studentDTOList)
-                    .build();
-        } catch (ResourceNotFoundException e) {
-            log.error("Unexpected error in findStudentsByCourseId: {}", e.getMessage());
-            throw new MicroserviceException("Error processing request", e);
+        } else {
+            log.info("Cache hit for course {}, using cached student data", courseId);
         }
+
+        return StudentByCouseResponse.builder()
+                .courseName(course.getName())
+                .teacher(course.getTeacher())
+                .studentDTOList(studentDTOList)
+                .build();
     }
 }
 
