@@ -2,5 +2,20 @@ spring:
   application:
     name: msvc-gateway
   config:
-    import: 'optional:configserver:http://localhost:8888'
+    import: optional:configserver:${SPRING_CONFIG_IMPORT:http://localhost:8888}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
+# Config for health probes
+management.endpoint.health.probes.enabled: true
+
 

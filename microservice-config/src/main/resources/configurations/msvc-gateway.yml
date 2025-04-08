@@ -10,25 +10,23 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: students
-          uri: 'http://localhost:8090'
+        - id: msvc-student
+          uri: lb://msvc-student
           predicates:
             - Path=/api/student/**
-        - id: courses
-          uri: 'http://localhost:9090'
+        - id: msvc-course
+          uri: lb://msvc-course
           predicates:
             - Path=/api/course/**
-        - id: auth
-          uri: 'http://localhost:9091'
+        - id: msvc-auth
+          uri: lb://msvc-auth
           predicates:
             - Path=/api/auth/**
-  output:
-    ansi:
-      enabled: always
 eureka:
   client:
-    register-with-eureka: false
     serviceUrl:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
+  instance:
+    prefer-ip-address: true
 
 

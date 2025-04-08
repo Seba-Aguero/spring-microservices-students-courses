@@ -8,9 +8,11 @@ import com.microservice.course.controller.dto.StudentDTO;
 
 import java.util.List;
 
-@FeignClient(name = "msvc-student", url = "localhost:8090")
+@FeignClient(name = "msvc-student", url = "student-service:8090")
 public interface StudentClient {
 
     @GetMapping("/api/student/search-by-course/{courseId}")
     List<StudentDTO> findAllStudentByCourse(@PathVariable Long courseId);
 }
+
+
